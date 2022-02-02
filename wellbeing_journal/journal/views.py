@@ -1,5 +1,13 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 
 
 def home_page(request):
-    return HttpResponse("<h1>Welcome, it's a home page!</h1>")
+    return render(request, 'journal/home.html')
+
+
+def gratitude(request):
+    return render(request, 'journal/gratitude.html')
+
+
+def journaling(request):
+    return render(request, 'journal/journaling.html')
