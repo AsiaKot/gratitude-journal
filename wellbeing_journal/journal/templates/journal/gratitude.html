@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Gratitude</title>
-</head>
-<body>
-    <h1>What are you grateful for?</h1>
-</body>
-</html>
+{% extends 'journal/base.html' %}
+{% block content %}
+
+    <div class="container mt-4">
+        <h1>What are you grateful for?</h1>
+        {% for post in gratitude_posts %}
+        <p>{{ post.author }}</p>
+        {% endfor %}
+    </div>
+
+{% endblock%}
