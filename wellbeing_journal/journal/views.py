@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Daily
 from .forms import CreateGratefulPost, CreateJournalingPost
 from datetime import datetime
@@ -7,16 +8,15 @@ today = datetime.today()
 
 
 def home_page(request):
-    today_date = datetime.now().strftime("%d %b, %Y")
-    today_weekday = datetime.now().strftime("%A")
-    instance = instance_from_date(request, today)
-    return render(request, 'journal/home.html',
-                  {
-                        'title': 'Home Page',
-                        'today_date': today_date,
-                        'today_weekday': today_weekday,
-                        'instance': instance
-                   })
+    context = {
+        'title': 'Home Page',
+        'today_date': datetime.now().strftime("%d %b, %Y"),
+        'today_weekday': datetime.now().strftime("%A"),
+        }
+    if request.user:
+        context.update({'instance': instance_from_date(request, today)})
+
+    return render(request, 'journal/home.html', context)
 
 
 def instance_from_date(request, date):
@@ -36,11 +36,11 @@ def is_there_instance_already(request):
 def cleaned_data2list(form):
     gratitude_list = []
     for key, value in form.cleaned_data.items():
-        val = value
-        gratitude_list.append(val)
+        gratitude_list.append(value)
     return gratitude_list
 
 
+@login_required
 def add_gratitude_post(request):
     if request.method == "POST":
         instance = is_there_instance_already(request)
@@ -58,6 +58,7 @@ def add_gratitude_post(request):
                   })
 
 
+@login_required
 def delete_gratitude_post(request):
     instance = instance_from_date(request, today)
     instance.grateful_for = None
@@ -65,6 +66,7 @@ def delete_gratitude_post(request):
     return redirect('gratitude_form')
 
 
+@login_required
 def gratitude(request):
     try:
         instance = instance_from_date(request, today)
@@ -81,6 +83,7 @@ def gratitude(request):
         return redirect('gratitude_form')
 
 
+@login_required
 def add_journaling_post(request):
     if request.method == "POST":
         instance = is_there_instance_already(request)
@@ -99,6 +102,7 @@ def add_journaling_post(request):
                   })
 
 
+@login_required
 def delete_journaling_post(request):
     instance = instance_from_date(request, today)
     instance.thoughts = None
@@ -107,6 +111,7 @@ def delete_journaling_post(request):
     return redirect('journaling_form')
 
 
+@login_required
 def journaling(request):
     try:
         instance = instance_from_date(request, today)
