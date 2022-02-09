@@ -1,12 +1,14 @@
 {% extends 'journal/base.html' %}
+{% load bootstrap5form %}
 {% block content %}
 
     <div class="container mt-4">
         <h1>Register here:</h1>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register</button>
+            {{ form|bootstrap5form }}
+            <br>
+            <button type="submit" class="btn btn-dark btn-lg">Register</button>
         </form>
     </div>
 

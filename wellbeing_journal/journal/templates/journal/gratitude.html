@@ -1,11 +1,22 @@
 {% extends 'journal/base.html' %}
 {% block content %}
 
-    <div class="container mt-4">
-        <h1>What are you grateful for?</h1>
-        {% for post in gratitude_posts %}
-        <p>{{ post.author }}</p>
-        {% endfor %}
-    </div>
 
-{% endblock%}
+<div class="container mt-4">
+    <h1 class="fw-light">Today I'm <strong>grateful for</strong>...</h1>
+    <p class="fw-light">Here's the list of things that gave you the feeling of gratitude today:</p>
+    {% for post in instance.grateful_for %}
+        <ul>
+            <li><h2 class="fw-light">{{ post }}</h2></li>
+        </ul>
+    {% endfor %}
+    <p class="fw-light">Gratitude helps us feel more positive emotions, relish good experiences,
+        improve our health, deal with adversity, and build strong relationships.</p>
+
+    <div class="d-flex gap-2 col-5 ms-auto">
+        <a class="btn btn-danger btn-lg" href="{% url 'delete_gratitude_post' %}" role="button">Delete Post</a>
+        <a class="btn btn-dark btn-lg" href="{% url 'gratitude_form' %}" role="button">Update Post</a>
+    </div>
+</div>
+
+{% endblock %}

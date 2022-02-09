@@ -1,42 +1,80 @@
 {% extends 'journal/base.html' %}
 {% block content %}
-    <!-- Showcase -->
-    <section class="bg-light text-secondary py-4 text-center text-sm-start">
-        <div class="container">
-            <div class="d-lg-flex justify-content-between text-center">
-                <!-- 1st element -->
-                <img src="media/nice_pic.jpg" class="img-fluid rounded w-10 my-5">
 
-                <!-- 2nd element -->
+{% if user.is_authenticated %}
+<!-- Showcase for logged in user -->
+<section class="bg-light text-secondary py-4 text-center text-sm-start">
+    <div class="container">
+        <div class="d-lg-flex justify-content-between text-center">
+        <!-- 1st element -->
+            {% if instance.daily_pics %}
+            <img src="{{ instance.daily_pic.url }}" class="img-fluid rounded w-10 my-5">
+            {% else %}
+            {% endif %}
+
+        <!-- 2nd element -->
+            <div class="p-5">
                 <div class="p-5">
-                    <div class="p-5">
-                        <h1 class="fw-light">
-                            Welcome <span class="text-success"><strong>{{ user.username.capitalize }}</strong></span>
-                        </h1>
-                        <h2 class="fw-light"> Good to see you!</h2>
-                    </div>
-
-                    <p class="lead p-1">It's {{ today_weekday }}, {{ today_date }}.</p>
-
-                    <p class="lead">
-                        <strong>Be thankful!</strong>
-                        <br>Here's your <a href="{% url 'gratitude' %}">gratitude journal</a>.
-                    </p>
-                    <p class="lead">
-                        <strong>Write your reality!</strong>
-                        <br>Go to your <a href="{% url 'journaling' %}">journaling page</a>.
-                    </p>
-
+                    <h1 class="fw-light">
+                        Welcome <span class="text-success"><strong>{{ user.username.capitalize }}</strong></span>
+                    </h1>
+                    <h2 class="fw-light"> Good to see you!</h2>
                 </div>
 
-                <!-- 3rd element -->
-                <div>
-                    <p class="lead mt-5">Quote of the Day:</p>
-                    <p class="fst-italic">The purpose of our lives is to be happy.</p>
-                    <p class="fw-light small">Dalai Lama</p>
-                </div>
+                <p class="lead p-1">It's {{ today_weekday }}, {{ today_date }}.</p>
+
+                <p class="lead">
+                    <strong>Every day is good to be thankful!</strong>
+                    <br>Here's your <a href="{% url 'gratitude' %}">gratitude journal</a>.
+                </p>
+                <p class="lead">
+                    <strong>Also, please share today's thoughts.</strong>
+                    <br>Go to your <a href="{% url 'journaling' %}">journaling page</a>.
+                </p>
+
+            </div>
+
+            <!-- 3rd element -->
+            <div>
+                <p class="lead mt-5">Quote of the Day:</p>
+                <p class="fst-italic">The purpose of our lives is to be happy.</p>
+                <p class="fw-light small">Dalai Lama</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+{% else %}
+<!-- Showcase for logged in user -->
+<section class="bg-light text-secondary py-4 text-center text-sm-start">
+    <div class="container">
+        <div class="d-lg-flex justify-content-between text-center">
+            <!-- 1st element -->
+            <img src="media/grateful.jpg" class="img-fluid rounded w-10 my-5">
+
+            <!--2nd element -->
+            <div class="p-5">
+                <div class="p-5">
+                    <h1 class="fw-light">
+                        Welcome on <span class="text-dark"><strong>My Daily Journal</strong></span>
+                    </h1>
+                    <h3 class="fw-light">As you already know, showing gratitude is proven to be an effective tool for
+                        the mind and body. In fact, there’s lots of benefits to be had from spending a few minutes each
+                        day writing down what you’re thankful for. Find out yourself!</h3>
+                </div>
+                <h2 class="fw-light">
+                    <strong>Every day is good to be thankful!</strong>
+                </h2>
+                <h3 class="fw-light">
+                    Start your journal now! <a href="{% url 'register' %}">Register here</a>.
+                    <br>Or if you're already have an account <a href="{% url 'login' %}">Log in</a>.
+                </h3>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endif %}
 
 {% endblock%}

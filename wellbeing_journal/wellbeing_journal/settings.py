@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'journal.apps.JournalConfig',
     'user.apps.UserConfig',
+    'bootstrap5form',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

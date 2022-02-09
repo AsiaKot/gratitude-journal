@@ -1,8 +1,24 @@
 {% extends 'journal/base.html' %}
 {% block content %}
 
-    <div class="container mt-4">
-        <h1>Share your thoughts...</h1>
+<div class="container mt-4">
+    <h1 class="fw-light">Share your <strong>thoughts</strong>...</h1>
+    {% if instance.daily_pic %}
+        <div class="container p-1" style="text-align: center">
+            <img src="{{ instance.daily_pic.url }}" class="img-fluid rounded w-1 my-5">
+        </div>
+    {% endif %}
+    <div class="d-lg-flex justify-content-between text-center">
+        <div class="container p-5">
+            <h2 class="fw-light">{{ instance.date }}</h2>
+            <h2 class="fw-light">{{ instance.thoughts }}</h2>
+        </div>
     </div>
+    <div class="d-flex gap-2 col-5 ms-auto">
+        <a class="btn btn-danger btn-lg" href="{% url 'delete_journaling_post' %}" role="button">Delete Post</a>
+        <a class="btn btn-dark btn-lg" href="{% url 'journaling_form' %}" role="button">Update Post</a>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Update Photo</a>
+    </div>
+</div>
 
 {% endblock%}
