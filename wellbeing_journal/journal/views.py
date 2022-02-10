@@ -13,7 +13,7 @@ def home_page(request):
         'today_date': datetime.now().strftime("%d %b, %Y"),
         'today_weekday': datetime.now().strftime("%A"),
         }
-    if request.user:
+    if request.user.is_authenticated:
         context.update({'instance': instance_from_date(request, today)})
 
     return render(request, 'journal/home.html', context)
@@ -27,9 +27,7 @@ def instance_from_date(request, date):
 def is_there_instance_already(request):
     instance = instance_from_date(request, today)
     if not instance:
-        instance = Daily()
-    else:
-        pass
+        instance = Daily(author=request.user)
     return instance
 
 
