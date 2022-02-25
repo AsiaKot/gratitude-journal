@@ -40,8 +40,8 @@ def cleaned_data2list(form):
 
 @login_required
 def add_gratitude_post(request):
+    instance = is_there_instance_already(request)
     if request.method == "POST":
-        instance = is_there_instance_already(request)
         gratitude_form = CreateGratefulPost(request.POST)
         if gratitude_form.is_valid():
             instance.grateful_for = cleaned_data2list(gratitude_form)
@@ -83,16 +83,16 @@ def gratitude(request):
 
 @login_required
 def add_journaling_post(request):
+    instance = is_there_instance_already(request)
     if request.method == "POST":
-        instance = is_there_instance_already(request)
-        journaling_form = CreateJournalingPost(request.POST, request.FILES)
+        journaling_form = CreateJournalingPost(request.POST, request.FILES, instance=instance)
         if journaling_form.is_valid():
             instance.thoughts = journaling_form.cleaned_data.get("thoughts")
             instance.daily_pic = journaling_form.cleaned_data.get("daily_pic")
             instance.save()
             return redirect('journaling')
     else:
-        journaling_form = CreateJournalingPost()
+        journaling_form = CreateJournalingPost(instance=instance)
     return render(request, 'journal/journaling_form.html',
                   {
                       'title': 'Journal',

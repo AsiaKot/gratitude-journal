@@ -1,0 +1,32 @@
+{% extends 'journal/base.html' %}
+{% load bootstrap5form %}
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="fw-light"><strong>Profile</strong> info:</h1>
+</div>
+
+<div class="container p-4">
+    <div class="card p-4" style="max-width: 1000px;">
+        <div class="d-lg-flex justify-content-center">
+            <div class="container p-4">
+                <img src="{{ user.profile.profile_pic.url }}" class="img-fluid rounded-start">
+            </div>
+            <div class="container p-4">
+                <h2 class="fw-light"><strong>Username: </strong>{{ user.username }}</h2>
+                <h2 class="fw-light"><strong>Email: </strong>{{ user.email }}</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form|bootstrap5form }}
+                    {{ profile_form|bootstrap5form }}
+                    <div class="d-flex gap-2 col-2 ms-auto">
+                        <button type="submit" class="btn btn-dark btn-lg">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock%}
