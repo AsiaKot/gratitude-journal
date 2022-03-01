@@ -52,6 +52,10 @@ def add_gratitude_post(request):
             instance.grateful_for = cleaned_data2list(gratitude_form)
             instance.save()
             return redirect('gratitude')
+    if instance.grateful_for:
+        grateful_for_list = instance.grateful_for
+        g1, g2, g3 = grateful_for_list[0], grateful_for_list[1], grateful_for_list[2]
+        gratitude_form = CreateGratefulPost(initial={'grateful_for1': g1, 'grateful_for2': g2, 'grateful_for3': g3})
     else:
         gratitude_form = CreateGratefulPost()
     return render(request, 'journal/gratitude_form.html',
@@ -75,6 +79,7 @@ def gratitude(request):
         else:
             return redirect('gratitude_form')
     except AttributeError:
+        pass
         return redirect('gratitude_form')
 
 
