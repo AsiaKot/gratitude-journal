@@ -24,10 +24,9 @@ class Daily(models.Model):
         try:
             img = Image.open(self.daily_pic.path)
 
-            if img.height > 500 or img.width > 500:
-                output_size = (500, 500)
+            if img.height > 400 or img.width > 400:
+                output_size = (400, 400)
                 img.thumbnail(output_size)
                 img.save(self.daily_pic.path)
-
-        except:
+        except ValueError:
             pass

@@ -1,22 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Daily
-from .forms import CreateGratefulPost, CreateJournalingPost
 from datetime import datetime
 
+from .models import Daily
+from .forms import CreateGratefulPost, CreateJournalingPost, AddDailyPic
+
+
 today = datetime.today()
-
-
-def home_page(request):
-    context = {
-        'title': 'Home Page',
-        'today_date': datetime.now().strftime("%d %b, %Y"),
-        'today_weekday': datetime.now().strftime("%A"),
-        }
-    if request.user.is_authenticated:
-        context.update({'instance': instance_from_date(request, today)})
-
-    return render(request, 'journal/home.html', context)
 
 
 def instance_from_date(request, date):
@@ -32,10 +22,25 @@ def is_there_instance_already(request):
 
 
 def cleaned_data2list(form):
-    gratitude_list = []
+    list_ = []
     for key, value in form.cleaned_data.items():
-        gratitude_list.append(value)
-    return gratitude_list
+        list_.append(value)
+    return list_
+
+
+def home_page(request):
+    context = {
+        'title': 'Home Page',
+        'today_date': datetime.now().strftime("%d %b, %Y"),
+        'today_weekday': datetime.now().strftime("%A"),
+        }
+    if request.user.is_authenticated:
+        context.update({
+                        'instance': instance_from_date(request, date=today),
+                        'user_posts': Daily.objects.all().filter(author=request.user).order_by('-date'),
+                        })
+
+    return render(request, 'journal/home.html', context)
 
 
 @login_required
@@ -52,24 +57,16 @@ def add_gratitude_post(request):
     return render(request, 'journal/gratitude_form.html',
                   {
                         'title': 'Gratitude Journal',
+                        'today_weekday': datetime.now().strftime("%A"),
                         'gratitude_form': gratitude_form
                   })
-
-
-@login_required
-def delete_gratitude_post(request):
-    instance = instance_from_date(request, today)
-    instance.grateful_for = None
-    instance.save()
-    return redirect('gratitude_form')
 
 
 @login_required
 def gratitude(request):
     try:
         instance = instance_from_date(request, today)
-        gratitude_posts = instance.grateful_for
-        if gratitude_posts:
+        if instance.grateful_for:
             return render(request, 'journal/gratitude.html',
                           {
                                 'title': 'Gratitude Journal',
@@ -82,13 +79,20 @@ def gratitude(request):
 
 
 @login_required
+def delete_gratitude_post(request):
+    instance = instance_from_date(request, today)
+    instance.grateful_for = None
+    instance.save()
+    return redirect('gratitude_form')
+
+
+@login_required
 def add_journaling_post(request):
     instance = is_there_instance_already(request)
     if request.method == "POST":
-        journaling_form = CreateJournalingPost(request.POST, request.FILES, instance=instance)
+        journaling_form = CreateJournalingPost(request.POST, instance=instance)
         if journaling_form.is_valid():
             instance.thoughts = journaling_form.cleaned_data.get("thoughts")
-            instance.daily_pic = journaling_form.cleaned_data.get("daily_pic")
             instance.save()
             return redirect('journaling')
     else:
@@ -96,25 +100,16 @@ def add_journaling_post(request):
     return render(request, 'journal/journaling_form.html',
                   {
                       'title': 'Journal',
+                      'today_date': datetime.now().strftime("%d %b, %Y"),
                       'journaling_form': journaling_form
                   })
-
-
-@login_required
-def delete_journaling_post(request):
-    instance = instance_from_date(request, today)
-    instance.thoughts = None
-    instance.daily_pic.delete(save=True)
-    instance.save()
-    return redirect('journaling_form')
 
 
 @login_required
 def journaling(request):
     try:
         instance = instance_from_date(request, today)
-        thoughts = instance.thoughts
-        if thoughts is None:
+        if instance.thoughts is None:
             return redirect('journaling_form')
         else:
             return render(request, 'journal/journaling.html',
@@ -124,3 +119,44 @@ def journaling(request):
                           })
     except AttributeError:
         return redirect('journaling_form')
+
+
+@login_required
+def delete_journaling_post(request):
+    try:
+        instance = instance_from_date(request, today)
+        instance.thoughts = None
+        instance.save()
+    except AttributeError:
+        pass
+    return redirect('journaling_form')
+
+
+@login_required
+def daily_pic(request):
+    instance = is_there_instance_already(request)
+    if request.method == "POST":
+        daily_pic_form = AddDailyPic(request.POST, request.FILES, instance=instance)
+        if daily_pic_form.is_valid():
+            instance.daily_pic = daily_pic_form.cleaned_data.get('daily_pic')
+            instance.save()
+            return redirect('daily_pic')
+    else:
+        daily_pic_form = AddDailyPic(instance=instance)
+    return render(request, 'journal/daily_pic.html',
+                  {
+                      'title': 'Photo Journal',
+                      'daily_pic': daily_pic_form,
+                      'instance': instance
+                  })
+
+
+@login_required
+def delete_pic(request):
+    try:
+        instance = instance_from_date(request, today)
+        instance.daily_pic.delete(save=True)
+        instance.save()
+    except AttributeError:
+        pass
+    return redirect('daily_pic')

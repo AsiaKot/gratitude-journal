@@ -6,9 +6,21 @@ class CreateJournalingPost(forms.ModelForm):
 
     class Meta:
         model = Daily
-        fields = ['thoughts', 'daily_pic']
-        labels = {'thoughts': '', 'daily_pic': 'Add a pic'}
+        fields = ['thoughts']
+        labels = {'thoughts': ''}
         widgets = {'thoughts': forms.Textarea(attrs={'placeholder': 'Write something here...'})}
+
+        def form_valid(self, form):
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+
+
+class AddDailyPic(forms.ModelForm):
+
+    class Meta:
+        model = Daily
+        fields = ['daily_pic']
+        labels = {'daily_pic': ''}
 
         def form_valid(self, form):
             form.instance.author = self.request.user

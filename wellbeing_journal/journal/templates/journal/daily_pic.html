@@ -1,0 +1,28 @@
+{% extends 'journal/base.html' %}
+{% load bootstrap5form %}
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="fw-light">Upload a <strong>daily photo</strong>...</h1>
+    <p class="fw-light">If you want you can also share some picture of the day. Photo journals are very relatable
+        and informative.</p>
+    {% if instance.daily_pic %}
+        <div class="container mb-4" style="text-align: center">
+            <img src="{{ instance.daily_pic.url }}" class="img-fluid rounded w-1 mt-4">
+        </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ daily_pic|bootstrap5form }}
+        <br>
+            {% if instance.daily_pic %}
+                <button type="submit" class="btn btn-dark btn-lg">Update</button>
+                <a class="btn btn-danger btn-lg" href="{% url 'delete_pic' %}" role="button">Delete</a>
+            {% else %}
+                <button type="submit" class="btn btn-dark btn-lg">Add</button>
+            {% endif %}
+    </form>
+</div>
+
+{% endblock%}

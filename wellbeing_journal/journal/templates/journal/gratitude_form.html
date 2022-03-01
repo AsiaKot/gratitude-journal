@@ -2,16 +2,20 @@
 {% load bootstrap5form %}
 {% block content %}
 
-    <div class="container mt-4">
-        <h1 class="fw-light">What are you <strong>grateful for</strong> today, {{ request.user|capfirst }}?</h1>
-        <p class="fw-light">Gratitude journal is a tool to keep track of the good things in life.
-            Keep a daily record of life's little blessings.
-            Write down <strong>3 things</strong> that you are thankful for.</p>
-        <form method="POST">
-            {% csrf_token %}
-            {{ gratitude_form|bootstrap5form }}
-            <br><button type="submit" class="btn btn-dark btn-lg">Add</button>
-        </form>
-    </div>
+<div class="container mt-4">
+    <h1 class="fw-light">Show your <strong>gratitude</strong>...</h1>
+    <p class="fw-light">Gratitude journal is a tool to keep track of the good things in life.
+        Keep a daily record of life's little blessings.
+        Write down <strong>3 things</strong> that you are thankful for.</p>
+    <br>
+    <h2 class="fw-light">What are you <strong>grateful for</strong> today, on {{ today_weekday }}?</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ gratitude_form|bootstrap5form }}
+        <br>
+        <button type="submit" class="btn btn-dark btn-lg">Add</button>
+    </form>
+</div>
 
 {% endblock%}

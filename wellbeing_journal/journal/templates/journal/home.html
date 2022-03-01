@@ -6,32 +6,64 @@
 <section class="bg-light text-secondary py-4 text-center text-sm-start">
     <div class="container">
         <div class="d-lg-flex justify-content-between text-center">
-        <!-- 1st element -->
-            {% if instance.daily_pics %}
-            <img src="{{ instance.daily_pic.url }}" class="img-fluid rounded w-10 my-5">
-            {% else %}
-            {% endif %}
+            <!-- 1st element ToDo -->
 
-        <!-- 2nd element -->
-            <div class="p-5">
-                <div class="p-5">
-                    <h1 class="fw-light">
-                        Welcome <span class="text-success"><strong>{{ user.username.capitalize }}</strong></span>
-                    </h1>
-                    <h2 class="fw-light"> Good to see you!</h2>
+            <!-- 2nd element -->
+            <div class="container mt-4">
+                {% for post in user_posts %}
+                    <div class="d-lg-flex justify-content-between text-center">
+                        <div class="container p-4">
+                            <h2 class="fw">{{ post.date }}</h2>
+                            {% if post.grateful_for %}
+                                <h3 class="fw-light">I'm grateful for...</h3>
+                                {% for p in post.grateful_for %}
+                                    <ul>
+                                        <li><h3 class="fw-light"><i>{{ p }}</i></h3></li>
+                                    </ul>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% if post.daily_pic %}
+                    <h3 class="fw-light">Photo of the day:</h3>
+                    <div class="container p-1" style="text-align: center">
+                        <img src="{{ post.daily_pic.url }}" class="img-fluid rounded w-1 mt-4">
+                    </div>
+                {% endif %}
+
+                {% if post.thoughts %}
+                    <div class="d-lg-flex justify-content-between text-center">
+                        <div class="container p-4">
+                            <h3 class="fw-light">Journaling:</h3>
+                            <h3 class="fw-light"><i>{{ post.thoughts }}</i></h3>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="d-flex gap-2 col-3 ms-auto mb-4">
+                    <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">Delete
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="{% url 'delete_gratitude_post' %}">Gratitude Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'delete_journaling_post' %}">Journaling Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'delete_pic' %}">Photo</a></li>
+                    </ul>
+                    </div>
+                    <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">Update
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="{% url 'gratitude_form' %}">Gratitude Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'journaling_form' %}">Journaling Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'daily_pic' %}">Photo</a></li>
+                    </ul>
+                    </div>
                 </div>
-
-                <p class="lead p-1">It's {{ today_weekday }}, {{ today_date }}.</p>
-
-                <p class="lead">
-                    <strong>Every day is good to be thankful!</strong>
-                    <br>Here's your <a href="{% url 'gratitude' %}">gratitude journal</a>.
-                </p>
-                <p class="lead">
-                    <strong>Also, please share today's thoughts.</strong>
-                    <br>Go to your <a href="{% url 'journaling' %}">journaling page</a>.
-                </p>
-
+                {% endfor %}
             </div>
 
             <!-- 3rd element -->
@@ -49,8 +81,7 @@
 <section class="bg-light text-secondary py-4 text-center text-sm-start">
     <div class="container">
         <div class="d-lg-flex justify-content-between text-center">
-            <!-- 1st element -->
-<!--            <img src="media/grateful.jpg" class="img-fluid rounded w-10 my-5">-->
+            <!-- 1st element ToDo -->
 
             <!--2nd element -->
             <div class="p-5">
@@ -63,13 +94,10 @@
                         day writing down what you’re thankful for. Find out yourself!</h3>
                 </div>
                 <h2 class="fw-light">
-                    <strong>Every day is good to be thankful!</strong>
-                </h2>
+                    <strong>Every day is good to be thankful!</strong></h2>
                 <h3 class="fw-light">
                     Start your journal now! <a href="{% url 'register' %}">Register here</a>.
-                    <br>Or if you're already have an account <a href="{% url 'login' %}">Log in</a>.
-                </h3>
-
+                    <br>Or if you're already have an account <a href="{% url 'login' %}">Log in</a>.</h3>
             </div>
         </div>
     </div>

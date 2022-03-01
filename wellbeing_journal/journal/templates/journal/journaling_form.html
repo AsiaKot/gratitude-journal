@@ -2,18 +2,16 @@
 {% load bootstrap5form %}
 {% block content %}
 
-    <div class="container mt-4">
-        <h1 class="fw-light">Share your <strong>thoughts</strong>...</h1>
-        <p class="fw-light">Journaling is the process of writing down your thoughts and feelings about your personal
-            experiences. It empowers you to lean into your feelings and listen to what they have to say.</p>
-        <p class="fw-light">If you want you can also share some picture of the day. Photo journals are very relatable
-            and informative. They give both visual input and verbal descriptions that provide context.</p>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ journaling_form|bootstrap5form }}
-            <br>
-            <button type="submit" class="btn btn-dark btn-lg">Add</button>
-        </form>
-    </div>
+<div class="container mt-4">
+    <h1 class="fw-light">Share your <strong>thoughts</strong> of {{ today_date }}...</h1>
+    <p class="fw-light">Journaling is the process of writing down your thoughts and feelings about your personal
+        experiences. It empowers you to lean into your feelings and listen to what they have to say.</p>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ journaling_form|bootstrap5form }}
+        <br>
+        <button type="submit" class="btn btn-dark btn-lg">Add</button>
+    </form>
+</div>
 
 {% endblock%}

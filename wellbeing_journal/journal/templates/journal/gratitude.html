@@ -1,17 +1,18 @@
 {% extends 'journal/base.html' %}
 {% block content %}
 
-
 <div class="container mt-4">
-    <h1 class="fw-light">Today I'm <strong>grateful for</strong>...</h1>
-    <p class="fw-light">Here's the list of things that gave you the feeling of gratitude today:</p>
+    <h1 class="fw-light">Show your <strong>gratitude</strong>...</h1>
+    <p class="fw-light">Gratitude journal is a tool to keep track of the good things in life.
+        Keep a daily record of life's little blessings.</p>
+    <br>
+    <h3 class="fw-light">Today I'm <strong>grateful for</strong>...</h3>
     {% for post in instance.grateful_for %}
         <ul>
             <li><h3 class="fw-light"><i>{{ post }}</i></h3></li>
         </ul>
     {% endfor %}
-    <p class="fw-light">Gratitude helps us feel more positive emotions, relish good experiences,
-        improve our health, deal with adversity, and build strong relationships.</p>
+
 
     <div class="d-flex gap-2 col-5 ms-auto">
         <a class="btn btn-danger btn-lg" href="{% url 'delete_gratitude_post' %}" role="button">Delete Post</a>

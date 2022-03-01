@@ -3,11 +3,8 @@
 
 <div class="container mt-4">
     <h1 class="fw-light">Share your <strong>thoughts</strong>...</h1>
-    {% if instance.daily_pic %}
-        <div class="container p-1" style="text-align: center">
-            <img src="{{ instance.daily_pic.url }}" class="img-fluid rounded w-1 mt-4">
-        </div>
-    {% endif %}
+    <p class="fw-light">Journaling is the process of writing down your thoughts and feelings about your personal
+        experiences. It empowers you to lean into your feelings and listen to what they have to say.</p>
     <div class="d-lg-flex justify-content-between text-center">
         <div class="container p-4">
             <h3 class="fw-light">{{ instance.date }}</h3>
@@ -17,7 +14,6 @@
     <div class="d-flex gap-2 col-5 ms-auto mb-4">
         <a class="btn btn-danger btn-lg" href="{% url 'delete_journaling_post' %}" role="button">Delete Post</a>
         <a class="btn btn-dark btn-lg" href="{% url 'journaling_form' %}" role="button">Update Post</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Update Photo</a>
     </div>
 </div>
 
