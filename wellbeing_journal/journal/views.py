@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from datetime import datetime
 
 from .models import Daily
@@ -29,6 +30,10 @@ def cleaned_data2list(form):
 
 
 def home_page(request):
+    user_posts = Daily.objects.all().filter(author=request.user).order_by('-date')
+    paginator = Paginator(user_posts, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'title': 'Home Page',
         'today_date': datetime.now().strftime("%d %b, %Y"),
@@ -37,7 +42,8 @@ def home_page(request):
     if request.user.is_authenticated:
         context.update({
                         'instance': instance_from_date(request, date=today),
-                        'user_posts': Daily.objects.all().filter(author=request.user).order_by('-date'),
+                        'user_posts': user_posts,
+                        'page_obj': page_obj
                         })
 
     return render(request, 'journal/home.html', context)
