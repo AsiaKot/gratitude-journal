@@ -50,6 +50,16 @@ def home_page(request):
 
 
 @login_required
+def post_view(request, pk):
+    post = Daily.objects.all().filter(pk=pk).first()
+    try:
+        if request.user == post.author:
+            return render(request, 'journal/post_view.html', {'user_post': post})
+    except AttributeError:
+        return redirect('home_page')
+
+
+@login_required
 def add_gratitude_post(request):
     instance = is_there_instance_already(request)
     if request.method == "POST":

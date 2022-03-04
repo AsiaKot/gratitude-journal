@@ -1,0 +1,80 @@
+{% extends 'journal/base.html' %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<!-- Showcase for logged in user -->
+<section class="bg-light text-secondary py-4 text-center text-sm-start">
+    <div class="container">
+        <div class="d-lg-flex justify-content-between text-center">
+            <div class="container mt-4">
+
+              <div class="d-lg-flex justify-content-between text-center">
+                <div class="container p-4">
+                  <h2 class="fw">{{ user_post.date }}</h2> <!-- url nazwa_widoku/post.id -->
+                            {% if user_post.grateful_for %}
+                                <h3 class="fw-light">I'm grateful for...</h3>
+                                {% for grateful_post in user_post.grateful_for %}
+                                    <ul>
+                                        <h3 class="fw-light"><i>{{ grateful_post }} </i></h3>
+                                    </ul>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% if user_post.daily_pic %}
+                    <h3 class="fw-light">Photo of the day:</h3>
+                    <div class="container p-1" style="text-align: center">
+                        <img src="{{ user_post.daily_pic.url }}" class="img-fluid rounded w-1 mt-4">
+                    </div>
+                {% endif %}
+
+                {% if user_post.thoughts %}
+                    <div class="d-lg-flex justify-content-between text-center">
+                        <div class="container p-4">
+                            <h3 class="fw-light">Journaling:</h3>
+                            <h3 class="fw-light"><i>{{ user_post.thoughts }}</i></h3>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="d-flex gap-2 col-3 ms-auto mb-4">
+                    <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">Delete
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="{% url 'delete_gratitude_post' %}">Gratitude Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'delete_journaling_post' %}">Journaling Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'delete_pic' %}">Photo</a></li>
+                    </ul>
+                    </div>
+                    <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">Update
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="{% url 'gratitude_form' %}">Gratitude Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'journaling_form' %}">Journaling Post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'daily_pic' %}">Photo</a></li>
+                    </ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- 3rd element -->
+            <div>
+                <p class="lead mt-5">Quote of the Day:</p>
+                <p class="fst-italic">The purpose of our lives is to be happy.</p>
+                <p class="fw-light small">Dalai Lama</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endif %}
+
+{% endblock%}

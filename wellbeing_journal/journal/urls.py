@@ -5,6 +5,7 @@ from . import views as journal_views
 
 urlpatterns = [
     path('', journal_views.home_page, name='home_page'),
+    path('posts/<int:pk>/', journal_views.post_view, name='post_view'),
 
     path('gratitude/', journal_views.gratitude, name='gratitude'),
     path('gratitude/add', journal_views.add_gratitude_post, name='gratitude_form'),
